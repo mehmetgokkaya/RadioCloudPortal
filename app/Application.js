@@ -29,13 +29,16 @@ Ext.define('RadioCloudPortal.Application', {
         'sensor.MotionData', 
         'sensor.GarbageData', 
         'sensor.TiltData',               
-        'sensor.Sensors'
+        'sensor.Sensors',
+        'sensor.SensorTypes'
     ],
     
     launch: function () {
         // TODO - Launch the application
         Ext.getStore("Nodes").load();
         Ext.getStore("Alerts").load();
+        Ext.getStore("sensor.Sensors").load();
+        Ext.getStore("sensor.SensorTypes").load();        
         this.callParent();
     }
 });

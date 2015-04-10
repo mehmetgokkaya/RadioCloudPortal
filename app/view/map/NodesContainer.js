@@ -16,6 +16,14 @@ Ext.define('RadioCloudPortal.view.map.NodesContainer', {
         padding: 10,
         store: 'Nodes',
     
+    }, {
+        xtype: 'sensorgrid',
+        title: 'Sensor',
+        padding: 10,
+        store: 'sensor.Sensors',
+        collapsible: true,
+        split:true    
+
     }]
 
 });
