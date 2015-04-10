@@ -5,6 +5,15 @@
  */
 Ext.define('RadioCloudPortal.MyGlobal', {
     singleton: true,
-    //url: 'http://127.0.0.1:9090/RadioCloudAppServer/' 
-    url: 'http://54.191.187.164:8080/RadioCloudAppServer/'
+    
+    // Local Grails instance
+    url: 'http://127.0.0.1:9090/RadioCloudAppServer/' 
+    
+    // AWS Grails (run-app) instance
+    //url: 'http://54.191.187.164:8080/RadioCloudAppServer/'
+    
+    
+    // AWS Grails (war) instance
+    //url: 'http://54.191.187.164:9090/RadioCloudAppServer/'
+    
 });

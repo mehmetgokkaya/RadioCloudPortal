@@ -1,2 +1,2 @@
 // @tag full-page
-// @require /Users/nish/extjs_5/tmp/app/RadioCloudPortal/app.js
+// @require /Users/nish/radiocloud/RadioCloudPortal/app.js

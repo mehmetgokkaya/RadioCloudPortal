@@ -3,21 +3,18 @@ Ext.define('RadioCloudPortal.view.map.NodesContainer', {
     xtype: 'nodescontainer',
     requires: [
     ],
+    collapsible: true,
 
 
     items: [{
         title: 'Map',
         xtype: 'nodesmap',
         store: 'Nodes',
-        collapsible: true,
-        split: true
     }, {
         xtype: 'nodesgrid',
         title: 'Nodes',
         padding: 10,
         store: 'Nodes',
-        collapsible: true,
-        split:true    
     
     }]
 

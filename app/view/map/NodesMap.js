@@ -51,6 +51,7 @@ Ext.define('RadioCloudPortal.view.map.NodesMap', {
     // @private
 
     renderMap: function() {
+        
         this.log("");
         // Assert : centerMap() has been run, and therefore, 
         // this.latitude and this.longitude are set.

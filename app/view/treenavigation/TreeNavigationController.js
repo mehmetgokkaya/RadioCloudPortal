@@ -22,9 +22,9 @@ Ext.define('RadioCloudPortal.view.navigation.TreeNavigationController', {
     			console.log ("Triggering ApplicationChnage event");
     			this.fireEvent("ApplicationChange", record); 
     		} 
-    		if (ctype ==  "Node") {
-    		console.log ("Triggering NodeChnage event");
-    			//this.fireEvent("ApplicationChange", record);
+    		if (ctype ==  "Node") {    	
+    			Ext.getStore("Nodes").clearFilter();    			
+    			console.log ("Triggering NodeChnage event");    			
     			this.fireEvent("NodeChange", record);
     		}
     	} 
@@ -40,37 +40,34 @@ Ext.define('RadioCloudPortal.view.navigation.TreeNavigationController', {
     		if (!item.isRoot()) {
     			if (item.get('ctype') == "Application") {
     			
-    				/*
-    				if ( (Ext.getStore("Applications")
-    						.getById(item.get("id"))
-    						.get("nodes")
-    						.length)>0) 
-    						
-    				{
-    				*/
-    					item.set('leaf', false);    				    				    				
-    					item.removeAll();
+					// if trying to expand without selecting the node, just exit for now. Otherwise
+					// there is an exception.  Need to address at some point.
+    				if (Ext.getStore("Applications").getById(item.get("id")) == null)
+    					return;	
+
+    				if (Ext.getStore("Applications").getById(item.get("id")).get("nodes") == null)
+    					return;	
+    					
+
+    				item.set('leaf', false);    				    				    				
+    				item.removeAll();
     				
+    				
+    				Ext.getStore("Nodes").filterByApplication (item.get("id"));
+    				
+    				Ext.getStore("Applications").getById(item.get("id")).get("nodes").forEach(function (node) {    				   			
+    					var n = item.appendChild({
+    						//id: node["id"],
+    						node_id: node["id"],
+    						name: Ext.getStore("Nodes").getById(node["id"]).get("name"),
+    						leaf: true,
+    						ctype: 'Node',
+    						text: node["id"],
+    						});   						
+    				})
+    						    				
 
-    					    				
 
-    					Ext.getStore("Applications").getById(item.get("id")).get("nodes").forEach(function (node) {    				   			
-    						var n = item.appendChild({
-    							//id: node["id"],
-    							node_id: node["id"],
-    							name: Ext.getStore("Nodes").getById(node["id"]).get("name"),
-    							leaf: true,
-    							ctype: 'Node',
-    							text: node["id"],
-    							});   						
-    						}
-    					)	    				
-    				/*
-    				}
-    				else {
-    					return false;
-    				}
-    				*/
     				if (item.get('ctype') == "Region") {
     				// To Do:  include the Region logic
     				}
@@ -79,6 +76,7 @@ Ext.define('RadioCloudPortal.view.navigation.TreeNavigationController', {
     		}
     	} catch(e) {
     		console.log("######## Exception ############");
+    		console.log(e);
     	}	
     },
 

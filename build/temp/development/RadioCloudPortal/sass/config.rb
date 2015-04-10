@@ -1,3 +1,3 @@
 require '../../../../../ext/packages/ext-theme-base/sass/utils.rb'
 Compass.add_project_configuration('../../../../../sass/config.rb')
-cache_path = '/Users/nish/extjs_5/tmp/app/RadioCloudPortal/build/.sass-cache'
+cache_path = '/Users/nish/radiocloud/RadioCloudPortal/build/.sass-cache'

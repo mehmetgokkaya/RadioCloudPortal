@@ -36,13 +36,26 @@ Ext.define('RadioCloudPortal.view.sensor.Dashboard', {
             tdAttrs : {
                     align : 'center',
                     valign : 'middle',
+                    
+                    //Kanir Added width and height % to scale according to window
+                    width : '33%',                    
+                    
             },        
     },
 
     defaults: {
-            width: 400,
+
+			//Kanir changed the width to 100% and added flex=1 so table streches
+            //width: 400,
+			width: '100%',
+			flex:1,
+
+
+
             height: 400,
-            //bodyPadding: 30,
+            //height: '50%',
+            
+            
             frame: true,
             titleAlign: 'center',            
             animate: true,
@@ -215,7 +228,9 @@ Ext.define('RadioCloudPortal.view.sensor.Dashboard', {
                 // Create a polar chart
                 var polarChart = soil_moisture_panel.add(Ext.create('Ext.chart.PolarChart', {
     				xtype: 'polar',
-    				draggable: true,
+    				
+    				//Kanir Changed it to Draggable=false
+    				//draggable: true,
     				
     				width:325,   				
     				height: 200,
@@ -226,8 +241,8 @@ Ext.define('RadioCloudPortal.view.sensor.Dashboard', {
  					axes: [{
             			type: 'numeric',
             			position: 'gauge',
-            			maximum: 800,
-            			minimum: 700,
+            			maximum: 1000,
+            			minimum: 400,
             			steps: 10,
             			majorticksteps:10,
 						margin: -10,
@@ -249,7 +264,7 @@ Ext.define('RadioCloudPortal.view.sensor.Dashboard', {
                 
                 var store = Ext.getStore('sensor.SoilMoistureData');
                 store.load();
-                var x = store.getAt(0).get('value');				
+                var x = store.getAt(0).get('value');	
 
                 // create a label
 				var label = soil_moisture_panel.add({
@@ -271,20 +286,23 @@ Ext.define('RadioCloudPortal.view.sensor.Dashboard', {
                 makeInterval = setInterval(function() {
                     var store = Ext.getStore('sensor.SoilMoistureData');
                     store.load();
-                    var val = store.getAt(0).get('value');
                     
-                    if (val>800) {
-                    	//label.setValue(val + " counts");
-                    	label.setValue("Soil is very dry: " + val);
-                    } else if (val>775) {
-                    	label.setValue("Soil moisture is a bit low: " + val);                    
-                    } else if (val<725) {
-                    	label.setValue("Soil moisture is too much: " + val);
-                    } else {
-                    	label.setValue("Soil moisture is appropriate: " + val);
-                    }
- 					polarChart.redraw();                  	
-                }, 5000);  
+                    if (store.count() > 0) {
+                    	var val = store.getAt(0).get('value');
+                    
+                    	if (val>800) {
+                    		//label.setValue(val + " counts");
+                    		label.setValue("Soil is very dry: " + val);
+                    	} else if (val>800) {
+                    		label.setValue("Soil moisture is a bit low: " + val);                    
+                    	} else if (val<625) {
+                    		label.setValue("Soil moisture is too much: " + val);
+                    	} else {
+                    		label.setValue("Soil moisture is appropriate: " + val);
+                    	}
+ 						polarChart.redraw();    
+ 					}              	
+                }, 2000);  
                 
             };              				
 
@@ -315,14 +333,17 @@ Ext.define('RadioCloudPortal.view.sensor.Dashboard', {
                 makeInterval = setInterval(function() {
                     var store = Ext.getStore('sensor.MotionData');
                     store.load();
-                    var val = store.getAt(0).get('value');
+                    if (store.count()>0) {
                     
-                    var row = store.getAt(0);
+                    	var val = store.getAt(0).get('value');
                     
-					if (row.get('value') == 'OFF') motionImage.setSrc('resources/images/VibrateOff.png');
-					if (row.get('value') == 'ON') motionImage.setSrc('resources/images/VibrateOn.png');
+                    	var row = store.getAt(0);
+                    
+						if (row.get('value') == 'OFF') motionImage.setSrc('resources/images/VibrateOff.png');
+						if (row.get('value') == 'ON') motionImage.setSrc('resources/images/VibrateOn.png');
+					}
 
-                }, 5000);
+                }, 2000);
                 
             };
             
@@ -348,21 +369,36 @@ Ext.define('RadioCloudPortal.view.sensor.Dashboard', {
     				padding: '75 0 0 0',
 				});
 				
-				tilt.add(tiltImage);
- 				
+				tilt.add(tiltImage); 				
+
+                // Look at the tilt position
+                var store = Ext.getStore('sensor.TiltData');
+                store.load();
+                
+                if (store.count() > 0) {
+                	var val = store.getAt(0).get('value');
+					if (val == 'UP') tiltImage.setSrc('resources/images/TiltUp.png');
+					if (val == 'DOWN') tiltImage.setSrc('resources/images/TiltDown.png');
+					if (val == 'LEFT') tiltImage.setSrc('resources/images/TiltLeft.png');
+					if (val == 'RIGHT') tiltImage.setSrc('resources/images/TiltRight.png');
+				}
+
+
+
                 makeInterval = setInterval(function() {
                     var store = Ext.getStore('sensor.TiltData');
                     store.load();
-                    var val = store.getAt(0).get('value');
+                    if (store.count() > 0) {
+                    	var val = store.getAt(0).get('value');
                     
-                    var row = store.getAt(0);
+                    	var row = store.getAt(0);
                     
-					if (row.get('value') == 'UP') tiltImage.setSrc('resources/images/TiltUp.png');
-					if (row.get('value') == 'DOWN') tiltImage.setSrc('resources/images/TiltDown.png');
-					if (row.get('value') == 'LEFT') tiltImage.setSrc('resources/images/TiltLeft.png');
-					if (row.get('value') == 'RIGHT') tiltImage.setSrc('resources/images/TiltRight.png');
-
-                }, 5000);
+						if (row.get('value') == 'UP') tiltImage.setSrc('resources/images/TiltUp.png');
+						if (row.get('value') == 'DOWN') tiltImage.setSrc('resources/images/TiltDown.png');
+						if (row.get('value') == 'LEFT') tiltImage.setSrc('resources/images/TiltLeft.png');
+						if (row.get('value') == 'RIGHT') tiltImage.setSrc('resources/images/TiltRight.png');
+					}
+                }, 2000);
             };            
 
 // ###################################  Waste Management Data Sensor #############################            
@@ -407,39 +443,42 @@ Ext.define('RadioCloudPortal.view.sensor.Dashboard', {
 				
 				var store = Ext.getStore('sensor.GarbageData');
                 store.load();
-                var x = store.getAt(0).get('value');				
+                if (store.count()>0) {
+                	var x = store.getAt(0).get('value');				
 				
-				// Add a label to display the fill level
-				var label = waste_management.add({
-					xtype: 'displayfield',
-					fieldLabel: 'Garbage:',
-        			name: 'percent_full_txt',
-        			value: x + " cms",
-        			labelCls: 'biggertext',
-        			fieldCls:'biggertext',
-        			style:{
-         				'font-size':'16px!important'
-        			},
-  					//labelStyle:{
-                	//	'font-size':'32px!important'
-             		//},
-				});
+					// Add a label to display the fill level
+					var label = waste_management.add({
+						xtype: 'displayfield',
+						fieldLabel: 'Free Space:',
+        				name: 'percent_full_txt',
+        				value: x + " cms",
+        				labelCls: 'biggertext',
+        				fieldCls:'biggertext',
+        				style:{
+         					'font-size':'16px!important'
+        				},
+  						//labelStyle:{
+                		//	'font-size':'32px!important'
+             			//},
+					});
+				}
                 
                 
                 // Start a timer to periodically fetch the latest value
                 makeInterval = setInterval(function() {
                     var store = Ext.getStore('sensor.GarbageData');
                     store.load();
-                    var val = store.getAt(0).get('value');
-                    label.setValue(val + " cms");
-                    if (val<21) {
-                    	garbageImage.setSrc('resources/images/garbage_full.jpg');
+                    if (store.count() > 0) {
+                    	var val = store.getAt(0).get('value');
+                    	label.setValue(val + " cms");
+                    	if (val<26) {
+                    		garbageImage.setSrc('resources/images/garbage_full.jpg');
+                    	}
+                    	else
+                    		garbageImage.setSrc('resources/images/garbage_empty.jpg');
                     }
-                    else
-                    	garbageImage.setSrc('resources/images/garbage_empty.jpg');
                     	
-                    	
-                }, 5000);                				
+                }, 2000);                				
     		}
     		
     	});

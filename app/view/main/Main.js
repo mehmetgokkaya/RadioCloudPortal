@@ -40,21 +40,33 @@ Ext.define('RadioCloudPortal.view.main.Main', {
         //html: 'Cognosos'
         html: '<img src="resources/images/cognosos.png" height="30" width="105" />'
     },{
+        
         region: 'west',
         xtype: 'treenavigation',
         title: 'Applications',
-        width: 188,
-        padding: 10,
+        
+        
+        //width: 188,
+        //kanir added flex so width of the panel depends on size of the window
+        flex:2,
+        columnWidth: .05,
+        padding: 8,
+        
+        //padding: 10,
         split: true,
         collapsible: true,        
 
     }, {
-        //xtype: 'sensordatacharts',
         xtype: 'dashboard',
         region: 'center',
         //title: 'Sensor Data',
         title: '<font style="font-size: 16px;"><b>Sensor Data</b></font>',
         titleAlign: 'center',
+        
+        //kanir added flex so width of the panel depends on size of the window
+        flex:10,
+        
+        
         padding: 10,
         height: 160,
         collapsible: false,
