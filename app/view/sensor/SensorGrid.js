@@ -31,9 +31,20 @@ Ext.define("RadioCloud.view.sensor.SensorGrid", {
     }],    
     
     columns: [{
-        text: 'Id',
-        dataIndex: 'id',
-        width: 120
+        text: 'Last Update',
+        dataIndex: 'sensorType_id',
+        width: 120,
+        renderer : function(val) {
+        	try {
+        		n = Ext.getStore("sensor.SensorTypes").getById(val).get("name");
+        		storeName = "sensor." + n + "Data";
+        		store = Ext.getStore(storeName);
+        		//return store.getAt(0).get('dateCreated');
+        		return Ext.Date.format(store.getAt(0).get('dateCreated'),'m-d-y,  H:i a');
+        	} catch (e) {
+        		return 'No Updates';
+        	}    	
+        }
     }, {
         text: 'Node',
         dataIndex: 'node',
@@ -67,11 +78,14 @@ Ext.define("RadioCloud.view.sensor.SensorGrid", {
         text: 'Current Value',
         dataIndex: 'sensorType_id',
         renderer : function(val) {
-        	
-        	n = Ext.getStore("sensor.SensorTypes").getById(val).get("name");
-        	storeName = "sensor." + n + "Data";
-        	store = Ext.getStore(storeName);
-        	return store.getAt(0).get('value');
+        	try {
+        		n = Ext.getStore("sensor.SensorTypes").getById(val).get("name");
+        		storeName = "sensor." + n + "Data";
+        		store = Ext.getStore(storeName);
+        		return store.getAt(0).get('value');
+        	} catch (e) {
+        		return 'No Data';
+        	}
         },
         
         

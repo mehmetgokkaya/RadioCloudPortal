@@ -401,7 +401,7 @@ Ext.define('RadioCloudPortal.view.sensor.Dashboard', {
                 }, 2000);
             };            
 
-// ###################################  Waste Management Data Sensor #############################            
+// ###################################  Garbage Data Sensor #############################            
             if (sensorType==10  && Ext.getStore('sensor.GarbageData').getCount()>0 ) {
                 me.log("Adding Waste Management Image");
                 
@@ -470,12 +470,17 @@ Ext.define('RadioCloudPortal.view.sensor.Dashboard', {
                     store.load();
                     if (store.count() > 0) {
                     	var val = store.getAt(0).get('value');
-                    	label.setValue(val + " cms");
-                    	if (val<26) {
-                    		garbageImage.setSrc('resources/images/garbage_full.jpg');
+                    	
+                    	if (val < 150) {
+                    		label.setValue(val + " cms");
+                    		if (val<40) {
+                    			garbageImage.setSrc('resources/images/garbage_full.jpg');
+                    		}
+                    		else
+                    			garbageImage.setSrc('resources/images/garbage_empty.jpg');
                     	}
-                    	else
-                    		garbageImage.setSrc('resources/images/garbage_empty.jpg');
+                    		
+                    		
                     }
                     	
                 }, 2000);                				
