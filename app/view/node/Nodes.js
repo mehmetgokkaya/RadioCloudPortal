@@ -6,6 +6,14 @@ Ext.define("RadioCloud.view.node.Nodes", {
 	layout: 'fit',
 	
     requires: ['Ext.grid.column.Column', 'Ext.grid.column.Template'],
+    
+    plugins: 'gridfilters',
+    
+ 	emptyText: 'No Matching Records',
+    loadMask: true,
+    stateful: true,
+    defaultListenerScope: true,   
+    
 
     columns: [{
         text: 'Name',
@@ -13,11 +21,41 @@ Ext.define("RadioCloud.view.node.Nodes", {
         width: 120
     }, {
         text: 'Status',
-        dataIndex: 'status'
+        dataIndex: 'status',
+        //align: 'center',
+        renderer : function(val) {
+        	var out = "Connected";
+        	if (val==0)
+            	out = "Disconnected";
+            
+        if (val == 0) {
+            return '<span style="color:' + "#cf4c35" + ';">' + out + '</span>';
+        } else {
+            return '<span style="color:' + "#73b51e" + ';">' + out + '</span>';
+        }
+        return out;
+    }        
+
     }, {
         text: 'Signal Strength',
         dataIndex: 'signal_strength',
-        align: 'right'
+        align: 'center',
+        renderer : function(val) {
+        	var out = "Strong";
+        	
+        	if (val<-100) {
+            	out = "Weak";
+            	return '<span style="color:' + "#cf4c35" + ';">' + out + '</span>';
+            }
+
+
+        	if (val<-70) {
+            	out = "Fair";
+            	return out;
+            };
+        	           
+            return '<span style="color:' + "#73b51e" + ';">' + out + '</span>';
+    	}                
     }, {
         text: 'Address',
         dataIndex: 'address',
